@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+// import logo from './logo.svg';
+import './components/learning-examples/SecondComponent'
 import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './components/todo/TodoApp'
+// import SecondComponent from './components/learning-examples/SecondComponent';
+import CounterButton from './components/Counter/Counter';
+import Counter from './components/Counter/Counter';
+import TodoApp from './components/todo/TodoApp';
+ 
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+      {/* <Counter/> */}
+      <TodoApp/>
+      </div>
+    );
+  }
 }
+// class FirstComponent extends Component {
+//   render() {
+//     return (
+//       <div className="FirstComponent">
+//        My first Component
+//       </div>
+//     );
+//   }
+// }
+
+// function ThirdComponent(){
+//   return (
+//     <div className="ThirdComponent">
+//      My third Component
+//     </div>
+//   );
+// }
+// class LearningComponent extends Component {
+//   render() {
+//     return (
+//       <div className="LearningComponent">
+//       <FirstComponent/>
+//       <FirstComponent/>
+//       <ThirdComponent/>
+//       <SecondComponent/>
+//        LearningComponent
+//       </div>
+//     );
+//   }
+// }
+
+
 
 export default App;

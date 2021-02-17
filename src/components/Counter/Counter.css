@@ -1,0 +1,53 @@
+/* button{
+    background-color: green;
+    font-size: 16px;
+    padding :15px 30px;
+    color:white;
+    width:100px;
+} */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+  }
+
+.count{
+    font-size: 50px;
+    padding: 15px 30px;
+}
+
+button.reset{
+    background-color: red;    
+    width:200px;
+}
+
+input[type=text], input[type=password] {
+    /* width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box; */
+    background: #FFFFFF url(/rsrc.php/v3/yO/r/YQNfPR9MJfx.png) repeat-x;
+    border: 1px solid #dddfe2;
+    color: #1d2129;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    height: 20px;
+    line-height: 6px;
+    margin: 8px 0;
+    padding: 12px 20px;
+    width:50%;
+    vertical-align: middle;
+}
+.abc{
+    margin: auto;
+    width: 50%;
+    border: 3px #008B8B;
+    padding: 15px;
+    background-color: #F0FFFF;
+}
