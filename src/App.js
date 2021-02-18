@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './components/learning-examples/SecondComponent'
 import './App.css';
+import './bootstrap.css';
+import './bootstrap1.css';
 import './components/todo/TodoApp'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // import SecondComponent from './components/learning-examples/SecondComponent';
 import CounterButton from './components/Counter/Counter';
 import Counter from './components/Counter/Counter';
