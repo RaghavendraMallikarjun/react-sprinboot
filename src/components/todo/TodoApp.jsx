@@ -1,6 +1,7 @@
 import React ,{Component} from 'react'
 import {BrowserRouter as Router,Route,Link,hr} from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom';
+import AuthenticationService from './AuthenticationService.jsx';
 
 class TodoApp extends Component{
     render(){
@@ -13,6 +14,7 @@ class TodoApp extends Component{
                    <Route path="/login" exact component={LoginComponent}/>
                    <Route path="/welcome" exact component={WelcomeComponent}/>
                    <Route path="/todos" exact component={ListTodosComponent}/>
+                   <Route path="/logout" exact component={LogoutComponent}/>                   
                    <Route component={ErrorComponent}/>
                    </Switch>
                    <FooterComponent/>
@@ -28,14 +30,14 @@ class HeaderComponent extends Component{
         return(          
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <div><a href="https://www.javatpoint.com/spring-boot-tutorial" className="navbar-brand">React-springboot</a></div>
+                    <div><a href="https://www.javatpoint.com/spring-boot-tutorial" className="navbar-brand">React-SpringBoot</a></div>
                     <ul className="navbar-nav">
                          <li ><Link className="nav-link" to="/welcome">Home</Link></li> 
                          <li ><Link className="nav-link" to="/todos">Todos</Link></li>
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
                          <li ><Link className="nav-link" to="/login">Login</Link></li>
-                         <li ><Link className="nav-link" to="/logout">Logout</Link></li>
+                         <li ><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li>
                     </ul>
                 </nav>
             </header>
@@ -47,12 +49,26 @@ class HeaderComponent extends Component{
 class FooterComponent extends Component{
     render(){
         return(
+            <footer className="footer">
+            <span className="text-muted">All Rights Reserved 2021 @React-springboot</span>
+            </footer>
+        )
+    }
+}
+
+class LogoutComponent extends Component{
+    render(){
+        return(
             <>
-           <hr/> Footer
+           <h1>You are logged out</h1>
+           <div className="container">
+                Thank You for Using Our Application
+           </div>
             </>  
         )
     }
 }
+
 
 class LoginComponent extends Component{
 
@@ -77,6 +93,7 @@ class LoginComponent extends Component{
 
     loginClicked(){
         if(this.state.username==='raghavendra' && this.state.password==='12345'){
+            AuthenticationService.registerSuccessfulLogin(this.state.username,this.state.password);
             console.log('login successful')
             this.setState({showLoginSuccessful:true});
         }    
@@ -89,14 +106,24 @@ class LoginComponent extends Component{
 
     render(){
         return(
-            <div className="abc">
-            <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed}/>
-            <ShowValidCredentials showLoginSuccessful={this.state.showLoginSuccessful}/>
-            <div>Login/Register</div>
-           <div><input type="text" name="username"  value={this.state.username} onChange={this.handleChange}></input></div>
-           <div><input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input></div>
-           <div><button onClick={this.loginClicked}>Login</button></div>
+            <>
+            <h1>Login</h1>
+            <div className="container">
+            {/* <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed}/> */}
+            {/* <ShowValidCredentials showLoginSuccessful={this.state.showLoginSuccessful}/> */}
+            {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid credentials</div>}
+            {this.state.showLoginSuccessful && <div>Login successful</div>}
+            
+                <div> 
+                    <input type="text" name="username"  value={this.state.username} onChange={this.handleChange}></input>          
+                </div>
+                <div>
+                   <input type="password" name="password"  value={this.state.password} onChange={this.handleChange} ></input>          
+                </div>     
+               <button className="btn btn-success"  onClick={this.loginClicked}>Login</button>         
+           
            </div>
+           </>
         )
     }
 } 
@@ -104,9 +131,12 @@ class LoginComponent extends Component{
 class WelcomeComponent extends Component{
     render(){
         return (
-        <div>
-        Welcome {this.props.match.params.name}.you can manage your tasks <Link to="/todos">here</Link>
-        </div>
+            <>
+            <h1>Welcome!</h1>
+            <div className="container">
+            Welcome {this.props.match.params.name}.you can manage your tasks <Link to="/todos">here</Link>
+            </div>
+            </>
        ) 
     }
 }
@@ -129,7 +159,8 @@ class ListTodosComponent extends Component{
 
         <div>
          <h1>List Tods</h1>
-         <table>
+         <div className="container">
+         <table class="table">
              <thead>
                  <tr>
                   <th>id</th>
@@ -157,6 +188,7 @@ class ListTodosComponent extends Component{
 
              
          </table>
+         </div>
         </div> 
 
         );
