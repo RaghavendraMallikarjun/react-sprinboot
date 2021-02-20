@@ -1,11 +1,11 @@
-/* button{
+ /* button{
     background-color: green;
     font-size: 16px;
     padding :15px 30px;
     color:white;
     width:100px;
 } */
-button {
+/* button {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -32,7 +32,7 @@ input[type=text], input[type=password] {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box; */
-    border: 1px solid #dddfe2;
+    /* border: 1px solid #dddfe2;
     color: #1d2129;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -41,12 +41,12 @@ input[type=text], input[type=password] {
     margin: 8px 0;
     padding: 12px 20px;
     width:50%;
-    vertical-align: middle;
-}
+    vertical-align: middle; */
+/* }
 .abc{
     margin: auto;
     width: 50%;
     border: 3px #008B8B;
     padding: 15px;
     background-color: #F0FFFF;
-}
+}  */ 

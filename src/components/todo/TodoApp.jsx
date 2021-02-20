@@ -2,6 +2,7 @@ import React ,{Component} from 'react'
 import {BrowserRouter as Router,Route,Link,hr} from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom';
 import AuthenticationService from './AuthenticationService.jsx';
+import HelloWorldService from '../../apis/todo/HelloWorldService';
 
 class TodoApp extends Component{
     render(){
@@ -129,15 +130,51 @@ class LoginComponent extends Component{
 } 
 
 class WelcomeComponent extends Component{
+
+    constructor(props){
+        super()
+        this.retrieveWelcomeMessage=this.retrieveWelcomeMessage.bind(this);
+        this.state={
+            welcomeMessage:''
+        }
+    }
+
     render(){
         return (
             <>
             <h1>Welcome!</h1>
             <div className="container">
-            Welcome {this.props.match.params.name}.you can manage your tasks <Link to="/todos">here</Link>
+            Welcome {this.props.match.params.name}.
+            you can manage your tasks <Link to="/todos">here</Link>
+            </div>
+
+            <div className="container">
+             Click here to get customized welcome message
+            <button onClick={this.retrieveWelcomeMessage} className="btn btn-success">Get Welcome Message</button>
+            </div>
+
+            <div className="container">
+             {this.state.welcomeMessage}
             </div>
             </>
        ) 
+    }
+
+    retrieveWelcomeMessage(){
+        // HelloWorldService.executeHelloWorldService()
+        // .then(response=>this.handleSuccessfulResponse(response))
+
+        // HelloWorldService.executeHelloWorldBeanService()
+        // .then(response=>this.handleSuccessfulResponse(response))
+
+        HelloWorldService.executeHelloWorldPathVariableService(`You are most welcome`)
+        .then(response=>this.handleSuccessfulResponse(response))
+    }
+
+    handleSuccessfulResponse(response){
+        this.setState({
+            welcomeMessage:response.data.message2
+        })
     }
 }
 class ListTodosComponent extends Component{
