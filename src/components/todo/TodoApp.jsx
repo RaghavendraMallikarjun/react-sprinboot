@@ -1,9 +1,9 @@
 import React ,{Component} from 'react'
+import  {useParams} from "react-router-dom";
 import {BrowserRouter as Router,Route,Link,hr} from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom';
 import AuthenticationService from './AuthenticationService.jsx';
 import HelloWorldService from '../../apis/todo/HelloWorldService';
-
 class TodoApp extends Component{
     render(){
         return(
@@ -13,7 +13,8 @@ class TodoApp extends Component{
                    <HeaderComponent/>
                    <Switch>
                    <Route path="/login" exact component={LoginComponent}/>
-                   <Route path="/welcome" exact component={WelcomeComponent}/>
+                   <Route exact path="/welcome/:name" component={WelcomeComponent}/>
+                   <Route exact path="/welcome" component={WelcomeComponent}/>
                    <Route path="/todos" exact component={ListTodosComponent}/>
                    <Route path="/logout" exact component={LogoutComponent}/>                   
                    <Route component={ErrorComponent}/>
@@ -26,19 +27,22 @@ class TodoApp extends Component{
     }
 }
 
-class HeaderComponent extends Component{
+class HeaderComponent extends Component{    
     render(){
+
+        const isUserLoggedIn=AuthenticationService.isUserLoggedIn();
+        console.log(isUserLoggedIn);
         return(          
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="https://www.javatpoint.com/spring-boot-tutorial" className="navbar-brand">React-SpringBoot</a></div>
                     <ul className="navbar-nav">
-                         <li ><Link className="nav-link" to="/welcome">Home</Link></li> 
-                         <li ><Link className="nav-link" to="/todos">Todos</Link></li>
+                         { isUserLoggedIn  &&  <li ><Link className="nav-link" to="/welcome">Home</Link></li>  }
+                         {isUserLoggedIn  && <li ><Link className="nav-link" to="/todos">Todos</Link></li>  }
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                         <li ><Link className="nav-link" to="/login">Login</Link></li>
-                         <li ><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li>
+                        { !isUserLoggedIn && <li ><Link className="nav-link" to="/login">Login</Link></li> }
+                        { isUserLoggedIn &&  <li ><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li> }
                     </ul>
                 </nav>
             </header>
@@ -129,54 +133,74 @@ class LoginComponent extends Component{
     }
 } 
 
-class WelcomeComponent extends Component{
+class WelcomeComponent extends Component {
 
-    constructor(props){
-        super()
-        this.retrieveWelcomeMessage=this.retrieveWelcomeMessage.bind(this);
-        this.state={
-            welcomeMessage:''
+    constructor(props) {
+        super(props)
+        this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this)
+        this.state = {
+            welcomeMessage: ''
         }
+        this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
+        this.handleError = this.handleError.bind(this)
     }
 
-    render(){
+    render() {
         return (
             <>
-            <h1>Welcome!</h1>
-            <div className="container">
-            Welcome {this.props.match.params.name}.
-            you can manage your tasks <Link to="/todos">here</Link>
-            </div>
+                <h1>Welcome!</h1>
+                <div className="container">
+                    Welcome {this.props.match.params.name}.
+                    You can manage your todos <Link to="/todos">here</Link>.
+                </div>
+                <div className="container">
+                    Click here to get a customized welcome message.
+                    <button onClick={this.retrieveWelcomeMessage}
+                        className="btn btn-success">Get Welcome Message</button>
+                </div>
+                <div className="container">
+                    {this.state.welcomeMessage}
+                </div>
 
-            <div className="container">
-             Click here to get customized welcome message
-            <button onClick={this.retrieveWelcomeMessage} className="btn btn-success">Get Welcome Message</button>
-            </div>
-
-            <div className="container">
-             {this.state.welcomeMessage}
-            </div>
             </>
-       ) 
+        )
     }
 
-    retrieveWelcomeMessage(){
+    retrieveWelcomeMessage() {
         // HelloWorldService.executeHelloWorldService()
-        // .then(response=>this.handleSuccessfulResponse(response))
+        // .then( response => this.handleSuccessfulResponse(response) )
 
         // HelloWorldService.executeHelloWorldBeanService()
-        // .then(response=>this.handleSuccessfulResponse(response))
+        // .then( response => this.handleSuccessfulResponse(response) )
 
-        HelloWorldService.executeHelloWorldPathVariableService(`You are most welcome`)
-        .then(response=>this.handleSuccessfulResponse(response))
+        HelloWorldService.executeHelloWorldPathVariableService(this.props.match.params.name)
+            .then(response => this.handleSuccessfulResponse(response))
+            .catch(error => this.handleError(error))
     }
 
-    handleSuccessfulResponse(response){
-        this.setState({
-            welcomeMessage:response.data.message2
-        })
+    handleSuccessfulResponse(response) {
+        console.log(response)
+        this.setState({ welcomeMessage: response.data.message2 })
     }
+
+    handleError(error) {
+
+        console.log(error.response)
+
+        let errorMessage = '';
+
+        if (error.message)
+            errorMessage += error.message
+
+        if (error.response && error.response.data) {
+            errorMessage += error.response.data.message
+        }
+
+        this.setState({ welcomeMessage: errorMessage })
+    }
+
 }
+
 class ListTodosComponent extends Component{
     
     constructor(props){
